@@ -216,3 +216,35 @@ x_causal <- x |>
 
 * After fitting your models, view the output with confidence intervals. Are the covariates statistically significant. Interpret what each covariate’s estimate means in context.
 
+
+## Just Sex
+
+```{r}
+linear_reg() |> 
+  fit(lived_after ~ sex, data = x_pred) |> 
+  tidy(conf.int = TRUE)
+```
+
+```{r}
+linear_reg() |> 
+  fit(lived_after ~ sex, data = x_causal) |> 
+  tidy(conf.int = TRUE)
+```
+
+## Predictive
+
+Note that we can't include election_result because it is always "Won"!
+
+```{r}
+linear_reg() |>
+  fit(lived_after ~ win_margin + election_age + party, data = x_pred) |> 
+  tidy(conf.int = TRUE)
+```
+
+## Causal
+
+```{r}
+linear_reg() |>
+  fit(lived_after ~ election_result + win_margin + election_age + party, data = x_causal) |> 
+  tidy(conf.int = TRUE)
+```
