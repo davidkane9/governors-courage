@@ -36,7 +36,7 @@ tribble(
   "Sanders",        "16",   "Win", "7.2",  "56", "100%", "Democrat", "Male", "...",
   "Warren",     "34",   "Win", "3.5",  "48", "67%",  "Democrat",   "Female", "...",
     "..."               , "..." , "..." , "..." , "..." , "..." , "..." , "...", "...",
-  "McConnell", "12",   "Win","-9.0",  "54", "80%",  "Republican", "Male", "..."
+  "McConnell", "12",   "Win","9.0",  "54", "80%",  "Republican", "Male", "..."
 ) |>
   gt() |>
   tab_header(title = "Preceptor Table") |>
@@ -73,7 +73,7 @@ tribble(
   "Preceptor Table", "Sanders",   "2025",      "16",   "Win", "7.2",  "56", "100%", "Democrat", "Male", "...",
   "Preceptor Table", "Warren", "2025",      "34",   "Win", "3.5",  "48", "67%",  "Democrat",   "Female", "...",
   "...", "...", "...", "...", "...", "...", "...", "...", "...", "...", "...",
-    "Preceptor Table","McConnell","2025",   "12",   "Win","-9.0",  "54", "80%",  "Republican", "Male", "...",
+    "Preceptor Table","McConnell","2025",   "12",   "Win","9.0",  "54", "80%",  "Republican", "Male", "...",
   "...", "...", "...", "...", "...", "...", "...", "...", "...", "...", "..."
 ) |>
   gt() |>
@@ -176,10 +176,33 @@ tribble(
 
 * Suppose you want to build a model to predict how long a senator is expected to live after being elected. Which rows should you delete from your data? Why? (There is no right answer to this question!)
 
+Only keep recent data, say after 1945.
+
+Only keep data for the candidate who won the election.
+
+```{r}
+x_pred <- x |> 
+  filter(year > 1945) |> 
+  filter(election_result == "Win")
+```
 
 * Scenario 2 (Causal):
 
 * Now imagine you want to estimate the causal effect of winning an election on how long a candidate lives after the election.  What filtering strategy and variables will you use? Discuss with your group, record your answer, and be ready to share your reasoning. Once you filter your data, assign the result to a data frame named `x_causal`.
+
+Only keep recent data, say after 1945.
+
+Only keep data for close elections, say abs(win_margin) < 5, because those are the races in which random assignment is at least somewhat plausible.
+
+```{r}
+x_causal <- x |> 
+  filter(year > 1945) |> 
+  filter(abs(win_margin) < 5)
+```
+
+
+
+
 
 ## Model Estimation
 
